@@ -1,5 +1,6 @@
+
 import { func } from "prop-types"
-import { call, put, takeLatest } from "redux-saga/effects"
+import { call, debounce, put, takeLatest } from "redux-saga/effects"
 import studentApi from "../../api/studentApi"
 import { studentActions } from "./studentSlice"
 
@@ -13,8 +14,15 @@ function* fetchStudentList(action) {
     }
 }
 
+function* handleSearchDebounce(action) {
+    console.log('Student Saga Debounce')
+    yield put(studentActions.setFilter(action.payload))
+}
+
 
 export default function* studentSaga() {
     // watch fetch student action
     yield takeLatest(studentActions.fetchStudentList, fetchStudentList)
+
+    yield debounce(500, studentActions.setFilterWithDebounce.type, handleSearchDebounce)
 }

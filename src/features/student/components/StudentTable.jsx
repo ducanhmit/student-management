@@ -16,7 +16,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function StudentTable({ studentList, onEdit, onRemove }) {
+export default function StudentTable({ studentList, cityMap, onEdit, onRemove }) {
+  // console.log(cityMap)
   const classes = useStyles();
 
   return (
@@ -41,7 +42,7 @@ export default function StudentTable({ studentList, onEdit, onRemove }) {
               <TableCell>
                 <Box color={getMarkColor(student.mark)} fontWeight='bold'>{student.mark}</Box>
                 </TableCell>
-              <TableCell>{student.city}</TableCell>
+              <TableCell>{cityMap[student.city]?.name}</TableCell>
               <TableCell align="right">
                 <Button className={classes.edit} size='small'  color="primary" onClick={() => onEdit?.(student)} >
                   Edit
