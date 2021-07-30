@@ -86,3 +86,27 @@ STUDENT SLICE STATE:
 ADD/EDIT
 - React Hook Form v7
 - Yup
+
+
+
+ROUTINGS
+- /admin/students/add: add new student
+- /admin/students/:studentId: update a student
+
+
+Student Form
+- Mode: Add/Edit
+- Initial values
+- Values:
+    - name: Text input
+    - age: Number Input
+    - gender: Radio options
+    - city: Select
+    - mark: Number Input
+- Validation: all required
+    - name: at least two words
+    - age: >= 18
+    - gender: male/famale
+    - city: required
+    - mark: 0 -> 10
+- Submissions: redirect to students list page after submitting successfully

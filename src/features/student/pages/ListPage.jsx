@@ -9,6 +9,8 @@ import { Pagination } from "@material-ui/lab";
 import { classes } from "istanbul-lib-coverage";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useRouteMatch } from "react-router-dom";
+import studentApi from "../../../api/studentApi";
 import { selectCityList, selectCityMap } from "../../city/citySlice";
 import StudentFilters from "../components/StudentFilters";
 import StudentTable from "../components/StudentTable";
@@ -46,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ListPage(props) {
+  const match = useRouteMatch()
   const studentList = useSelector(selectStudentList);
   const pagination = useSelector(selectStudentPagination);
   const filter = useSelector(selectStudentFilter);
@@ -76,9 +79,24 @@ function ListPage(props) {
   };
 
   const handleFilterChange = (newFilter) => {
-    const action = studentActions.setFilter(newFilter)
-    console.log('City change action', action)
+    const action = studentActions.setFilter(newFilter);
+    console.log("City change action", action);
     dispatch(studentActions.setFilter(newFilter));
+  };
+
+  const handleRemoveStudent = async (student) => {
+    console.log("Handle remove student");
+    try {
+      // Remove student API
+      await studentApi.remove(student?.id || "");
+
+      // Trigger to re-fetch student list with current filter,
+      const newFilter = { ...filter };
+      dispatch(studentActions.setFilter(newFilter));
+    } catch (error) {
+      // Toast error
+      console.log("Failed to fetch student", error);
+    }
   };
 
   return (
@@ -86,9 +104,12 @@ function ListPage(props) {
       {loading && <LinearProgress className={classes.loading} />}
       <Box className={classes.titleContainer}>
         <Typography variant="h4">Student</Typography>
+        <Link to={`${match.url}/add`} style={{textDecoration: 'none'}}>
         <Button variant="contained" color="primary">
           Add new student
         </Button>
+        </Link>
+        
       </Box>
 
       <Box mb={3}>
@@ -101,7 +122,11 @@ function ListPage(props) {
       </Box>
 
       {/* Student Table */}
-      <StudentTable studentList={studentList} cityMap={cityMap} />
+      <StudentTable
+        studentList={studentList}
+        cityMap={cityMap}
+        onRemove={handleRemoveStudent}
+      />
 
       {/* Pagination */}
       <Box my={2} className={classes.paginationContainer}>
