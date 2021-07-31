@@ -3,6 +3,7 @@ import { ChevronLeft } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import studentApi from "../../../api/studentApi";
+import StudentForm from "../components/StudentForm";
 
 function AddEditPage(props) {
   const { studentId } = useParams();
@@ -22,7 +23,18 @@ function AddEditPage(props) {
     })();
   }, [studentId]);
 
-  console.log("Found student:", student);
+  const handleFormSubmit = (formValues) => {
+      //TODO: handle submit 
+  };
+
+  const initialValues = {
+    name: "",
+    age: "",
+    mark: "",
+    gender: "male",
+    city: "",
+    ...student,
+  };
 
   return (
     <Box>
@@ -38,6 +50,15 @@ function AddEditPage(props) {
       <Typography variant="h4">
         {isEdit ? "Update student info" : "Add new student"}
       </Typography>
+
+      {(!isEdit || Boolean(student)) && (
+        <Box mt={3}>
+          <StudentForm
+            initialValues={initialValues}
+            onSubmit={handleFormSubmit}
+          />
+        </Box>
+      )}
     </Box>
   );
 }
