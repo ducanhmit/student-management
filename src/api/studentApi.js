@@ -17,7 +17,7 @@ const studentApi = {
   },
 
   update(data) {
-    const url = '/students';
+    const url = `/students/${data.id}`;
     return axiosClient.patch(url, data);
   },
 

@@ -15,7 +15,6 @@ const citySlice = createSlice({
     fetchCityListSuccess(state, action) {
       state.loading = false;
       state.list = action.payload.data;
-
     },
     fetchCityListFailed(state) {
       state.loading = false;
@@ -30,9 +29,16 @@ export const cityActions = citySlice.actions;
 export const selectCityList = (state) => state.city.list;
 export const selectCityMap = createSelector(selectCityList, (cityList) =>
   cityList.reduce((map, city) => {
-    map[city.code] = city
-    return map
+    map[city.code] = city;
+    return map;
   }, {})
+);
+
+export const selectCityOptions = createSelector(selectCityList, (cityList) =>
+  cityList.map((city) => ({
+    label: city.name,
+    value: city.code,
+  }))
 );
 
 // Reducer

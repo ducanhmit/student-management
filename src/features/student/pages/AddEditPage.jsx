@@ -1,11 +1,12 @@
 import { Box, Typography } from "@material-ui/core";
 import { ChevronLeft } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import studentApi from "../../../api/studentApi";
 import StudentForm from "../components/StudentForm";
 
 function AddEditPage(props) {
+  const history = useHistory();
   const { studentId } = useParams();
   const isEdit = Boolean(studentId);
   const [student, setStudent] = useState();
@@ -23,8 +24,18 @@ function AddEditPage(props) {
     })();
   }, [studentId]);
 
-  const handleFormSubmit = (formValues) => {
-      //TODO: handle submit 
+  const handleStudentFormSubmit = async (formValues) => {
+    //TODO: handle submit
+    if (isEdit) {
+      await studentApi.update(formValues);
+    } else {
+      await studentApi.add(formValues);
+    }
+
+    // throw new Error('My testing Error')
+
+    // Redirect back to student list
+    history.push("/admin/students");
   };
 
   const initialValues = {
@@ -55,7 +66,7 @@ function AddEditPage(props) {
         <Box mt={3}>
           <StudentForm
             initialValues={initialValues}
-            onSubmit={handleFormSubmit}
+            onSubmit={handleStudentFormSubmit}
           />
         </Box>
       )}
