@@ -10,6 +10,7 @@ import { classes } from "istanbul-lib-coverage";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
+import { toast } from "react-toastify";
 import studentApi from "../../../api/studentApi";
 import { selectCityList, selectCityMap } from "../../city/citySlice";
 import StudentFilters from "../components/StudentFilters";
@@ -89,6 +90,8 @@ function ListPage(props) {
     try {
       // Remove student API
       await studentApi.remove(student?.id || "");
+
+      toast.success('Remove student successfully')
 
       // Trigger to re-fetch student list with current filter,
       const newFilter = { ...filter };

@@ -2,6 +2,7 @@ import { Box, Typography } from "@material-ui/core";
 import { ChevronLeft } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import studentApi from "../../../api/studentApi";
 import StudentForm from "../components/StudentForm";
 
@@ -32,7 +33,8 @@ function AddEditPage(props) {
       await studentApi.add(formValues);
     }
 
-    // throw new Error('My testing Error')
+    // Toast success
+    toast.success('Save student successfully!')
 
     // Redirect back to student list
     history.push("/admin/students");
